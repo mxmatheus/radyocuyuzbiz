@@ -1,0 +1,131 @@
+.globe-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(ellipse at center, #0a0a1f 0%, #000000 100%);
+
+    /* Performance optimizations */
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+}
+
+.globe-container canvas {
+    outline: none;
+    cursor: grab;
+
+    /* Hardware acceleration */
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+}
+
+.globe-container canvas:active {
+    cursor: grabbing;
+}
+
+.globe-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    z-index: 10;
+}
+
+.globe-loading p {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.country-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+    z-index: 5;
+}
+
+.country-label h3 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.country-label p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Point Tooltip Styling */
+:global(.point-tooltip) {
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 255, 255, 0.5);
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    font-family: var(--font-body);
+    color: white;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+:global(.point-tooltip strong) {
+    color: var(--color-neon-cyan);
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+/* Stars Background Effect */
+.globe-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(2px 2px at 20px 30px, white, rgba(0, 0, 0, 0)),
+        radial-gradient(2px 2px at 60px 70px, white, rgba(0, 0, 0, 0)),
+        radial-gradient(1px 1px at 50px 50px, white, rgba(0, 0, 0, 0)),
+        radial-gradient(1px 1px at 130px 80px, white, rgba(0, 0, 0, 0)),
+        radial-gradient(2px 2px at 90px 10px, white, rgba(0, 0, 0, 0));
+    background-size: 200px 200px;
+    background-position: 0 0, 40px 60px, 130px 270px, 70px 100px, 150px 50px;
+    opacity: 0.3;
+    animation: twinkle 5s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .country-label h3 {
+        font-size: 2rem;
+    }
+
+    .country-label p {
+        font-size: 1rem;
+    }
+}

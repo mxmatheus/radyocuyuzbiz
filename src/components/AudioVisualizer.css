@@ -1,0 +1,13 @@
+.audio-visualizer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+}
+
+.visualizer-canvas {
+    width: 100%;
+    max-width: 300px;
+    height: 60px;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5));
+}

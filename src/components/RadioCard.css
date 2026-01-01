@@ -1,0 +1,220 @@
+.radio-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    gap: var(--spacing-sm);
+    min-height: 80px;
+    /* Enhanced visibility - explicit styling */
+    background: rgba(30, 41, 59, 0.6) !important;
+    border: 1px solid rgba(100, 200, 255, 0.2) !important;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 8px;
+    color: white !important;
+    z-index: 1;
+}
+
+.radio-card.playing {
+    border-color: var(--color-neon-cyan);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+}
+
+.radio-card-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex: 1;
+    min-width: 0;
+    /* For ellipsis to work */
+}
+
+.radio-card-image {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.05);
+    position: relative;
+}
+
+.radio-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholder-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+}
+
+.playing-indicator {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    display: flex;
+    gap: 3px;
+    align-items: flex-end;
+    height: 16px;
+    z-index: 2;
+}
+
+.wave-bar {
+    width: 3px;
+    background: var(--color-neon-cyan);
+    border-radius: 2px;
+    animation: wave 0.8s ease-in-out infinite;
+}
+
+.wave-bar:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.wave-bar:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.wave-bar:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes wave {
+
+    0%,
+    100% {
+        height: 40%;
+    }
+
+    50% {
+        height: 100%;
+    }
+}
+
+.radio-card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.radio-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: white;
+}
+
+.radio-card-location {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.radio-card-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.tag {
+    font-size: 0.625rem;
+    padding: 0.25rem 0.5rem;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 12px;
+    color: var(--color-neon-cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.card-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.play-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(56, 189, 248, 0.1);
+    border: 2px solid var(--color-neon-cyan);
+    color: var(--color-neon-cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-normal);
+}
+
+.play-button:hover {
+    background: rgba(56, 189, 248, 0.25);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+}
+
+.favorite-button {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-normal);
+}
+
+.favorite-button:hover {
+    color: var(--color-neon-magenta);
+    border-color: var(--color-neon-magenta);
+    background: rgba(192, 132, 252, 0.1);
+    transform: scale(1.1);
+}
+
+.favorite-button.active {
+    color: var(--color-neon-magenta);
+    border-color: var(--color-neon-magenta);
+    background: rgba(192, 132, 252, 0.15);
+}
+
+.active-border {
+    position: absolute;
+    inset: -1px;
+    border: 2px solid var(--color-neon-cyan);
+    border-radius: var(--radius-md);
+    pointer-events: none;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .radio-card-image {
+        width: 50px;
+        height: 50px;
+    }
+
+    .play-button {
+        width: 35px;
+        height: 35px;
+    }
+
+    .favorite-button {
+        width: 30px;
+        height: 30px;
+    }
+}

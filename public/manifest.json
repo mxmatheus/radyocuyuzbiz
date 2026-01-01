@@ -1,0 +1,16 @@
+{
+    "name": "SonicAtlas",
+    "short_name": "SonicAtlas",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#0f172a",
+    "theme_color": "#0f172a",
+    "description": "Listen to the world via radio with SonicAtlas.",
+    "icons": [
+        {
+            "src": "vite.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ]
+}
