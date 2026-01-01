@@ -2,7 +2,7 @@
 
 **SonicAtlas** (formerly Radyocuyuzbiz) is an interactive 3D web application that allows you to explore and listen to thousands of live radio stations across the globe. Built with modern web technologies, it delivers an immersive audio-visual experience.
 
-![SonicAtlas Preview](/preview.png)
+![SonicAtlas Preview](./public/preview.png)
 
 ## 🌟 Features
 
@@ -23,36 +23,7 @@
 *   **Styling:** CSS variables, Glassmorphism, Responsive Design
 *   **Deployment:** Vercel (CI/CD, Analytics)
 
-## 🚀 Getting Started
 
-### Prerequisites
-*   Node.js (v18+)
-*   npm
-
-### Installation
-
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/yourusername/sonic-atlas.git
-    cd sonic-atlas
-    ```
-
-2.  Install dependencies:
-    ```bash
-    npm install
-    ```
-
-3.  Run the development server:
-    ```bash
-    npm run dev
-    ```
-
-4.  Build for production:
-    ```bash
-    npm run build
-    ```
-
----
 
 # 🌍 SonicAtlas - Dünyayı Dinle
 
@@ -76,22 +47,6 @@
 *   **Durum Yönetimi:** Zustand
 *   **Deployment:** Vercel
 
-## 🚀 Kurulum
 
-1.  Projeyi indirin:
-    ```bash
-    git clone https://github.com/kullaniciadi/sonic-atlas.git
-    cd sonic-atlas
-    ```
-
-2.  Paketleri yükleyin:
-    ```bash
-    npm install
-    ```
-
-3.  Projeyi başlatın:
-    ```bash
-    npm run dev
-    ```
 
 **License:** MIT
