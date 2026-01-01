@@ -209,7 +209,15 @@ export const useAudioPlayer = () => {
         if (!activeAudio) return;
 
         if (currentStation && isPlaying) {
-            const streamUrl = currentStation.url_resolved || currentStation.url;
+            let streamUrl = currentStation.url_resolved || currentStation.url;
+
+            // PRODUCTION FIX: Upgrade HTTP to HTTPS for Mixed Content
+            // If site is HTTPS, try to use HTTPS for radio streams
+            if (window.location.protocol === 'https:' && streamUrl.startsWith('http:')) {
+                const httpsUrl = streamUrl.replace('http:', 'https:');
+                console.log(`🔒 Upgrading HTTP to HTTPS: ${streamUrl} → ${httpsUrl}`);
+                streamUrl = httpsUrl;
+            }
 
             setError(null);
             setIsBuffering(true);
