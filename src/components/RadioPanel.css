@@ -58,6 +58,21 @@
     margin: 4px 0 0 0;
 }
 
+/* Mobile spacing fix */
+@media (max-width: 768px) {
+    .radio-panel-header {
+        padding: 1rem;
+    }
+
+    .header-top {
+        margin-bottom: 0.5rem;
+    }
+
+    .radio-panel-header h2 {
+        font-size: 1.5rem;
+    }
+}
+
 /* Scroll Area */
 .radio-panel-content {
     flex: 1;
