@@ -1,16 +1,132 @@
-# React + Vite
+# 🌍 SonicAtlas - Global Radio Streaming Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Explore and listen to thousands of radio stations from around the world through an interactive 3D globe.**
 
-Currently, two official plugins are available:
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://your-demo-url.com)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![React](https://img.shields.io/badge/React-18-61dafb.svg)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-5-646cff.svg)](https://vitejs.dev/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## React Compiler
+### 🎵 Radio Experience
+- **Global Radio Access** - Stream thousands of radio stations from 200+ countries
+- **Interactive 3D Globe** - Click countries on a beautiful 3D Earth to discover local stations
+- **Smart Search** - Real-time search and filtering by station name, country, or genre
+- **Favorites & History** - Save your favorite stations and track listening history
+- **Trending Stations** - Discover popular stations globally or by country
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🎨 User Interface
+- **Smooth Animations** - Professional entrance animations and transitions
+- **Glassmorphism Design** - Modern, cyberpunk-inspired UI with neon accents
+- **Dark Mode** - Eye-friendly dark theme optimized for extended listening
+- **Responsive Design** - Perfect experience on desktop, tablet, and mobile
+- **PWA Support** - Install as a native app on any device
 
-## Expanding the ESLint configuration
+### 🔧 Advanced Features
+- **Audio Visualizer** - Real-time frequency visualization during playback
+- **CORS Fallback** - Intelligent handling of CORS-restricted streams
+- **Globe Inertia** - Smooth, physics-based globe rotation
+- **Keyboard Controls** - Full keyboard shortcuts support
+- **Multi-language** - Turkish and English interface support
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 🎚️ Coming Soon
+- **Equalizer** - Full 5-band EQ with Web Audio API
+- **Sleep Timer** - Auto-stop playback after set duration
+- **Playlists** - Create and manage custom station playlists
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **React 18** - Modern UI framework
+- **Vite 5** - Lightning-fast build tool
+- **Framer Motion** - Smooth animations and transitions
+- **Zustand** - Lightweight state management
+- **React Globe.gl** - Interactive 3D globe visualization
+- **Three.js** - WebGL-powered 3D graphics
+
+### APIs & Services
+- **Radio Browser API** - Access to 40,000+ radio stations worldwide
+- **Web Audio API** - Audio visualization and processing
+- **Service Worker** - PWA offline support
+
+### Styling
+- **CSS3** - Custom glassmorphism and neon effects
+- **CSS Variables** - Theme system with cyan/purple/green variants
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/sonicatlas.git
+cd sonicatlas
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+### Environment Setup
+
+No environment variables required! The app uses public APIs and works out of the box.
+
+## 📱 PWA Installation
+
+SonicAtlas can be installed as a Progressive Web App:
+
+1. Visit the website
+2. Click the install icon in your browser's address bar
+3. Or use "Add to Home Screen" on mobile devices
+
+## 🎮 Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| `Space` | Play/Pause |
+| `Esc` | Close panels/menus |
+| `↑/↓` | Volume control |
+| `M` | Toggle menu |
+| `F` | Add to favorites |
+
+## 🌐 Browser Support
+
+- Chrome/Edge 90+
+- Firefox 88+
+- Safari 14+
+- Opera 76+
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [Radio Browser API](https://www.radio-browser.info/) - Free radio station database
+- [React Globe.gl](https://github.com/vasturiano/react-globe.gl) - 3D globe component
+- [Framer Motion](https://www.framer.com/motion/) - Animation library
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests.
+
+## 📧 Contact
+
+For questions or feedback, please open an issue on GitHub.
+
+---
+
+**Made with ❤️ and 🎵 for music lovers worldwide**
