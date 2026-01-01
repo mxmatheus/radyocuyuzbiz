@@ -62,7 +62,7 @@
   --glow-purple: 0 0 12px rgba(129, 140, 248, 0.25);
 }
 
-/* Theme Overrides via body class */
+/* Theme Overrides via body class (Legacy support) */
 body.theme-gold {
   --color-neon-cyan: #ffd700;
   /* Gold */

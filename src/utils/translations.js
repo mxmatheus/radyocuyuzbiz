@@ -30,7 +30,7 @@ export const translations = {
         volume: "Ses",
 
         // Settings
-        appearance: "Tema Ayarları", // Changed from "Görünüm & Tema" based on user request
+        appearance: "Renk Ayarları",
         language: "Dil / Language",
         visualizer: "Görselleştirme",
         performance: "Performans Modu",

@@ -15,8 +15,8 @@ export const useRadioStore = create((set, get) => ({
   selectedCountry: null,
   selectedCountryCode: null,
   showRadioPanel: false,
-  showSettingsModal: false, // New Modal State
-  searchQuery: '', // Search functionality
+  showSettingsModal: false,
+  searchQuery: '',
   selectedGenre: null,
   theme: 'cyan',
   language: typeof window !== 'undefined' && localStorage.getItem('radioLanguage')

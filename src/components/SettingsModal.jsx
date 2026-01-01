@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function SettingsModal() {
     const {
         showSettingsModal,
-        closeSettings,  // Fixing: correct function name from store
+        closeSettings,
         theme,
         setTheme,
         language,
@@ -73,7 +73,6 @@ export default function SettingsModal() {
                         maxWidth: '450px',
                         padding: '2rem',
                         borderRadius: '24px',
-                        background: 'rgba(15, 23, 42, 0.8)',
                         boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
                         maxHeight: '90vh',
                         overflowY: 'auto'

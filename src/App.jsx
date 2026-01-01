@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Analytics } from "@vercel/analytics/react"
 import GlobeComponent from './components/Globe';
 import RadioPanel from './components/RadioPanel';
 import Player from './components/Player';
@@ -82,7 +83,7 @@ function App() {
               position: 'absolute',
               top: '20px',
               left: '30px',
-              zIndex: 100,
+              zIndex: 150,
               display: 'flex',
               alignItems: 'center',
               gap: '20px',
@@ -115,9 +116,10 @@ function App() {
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
+              className="app-title-container"
             >
-              <h1 className="gradient-text" style={{ margin: 0, fontSize: '2rem', lineHeight: 1 }}>SONICATLAS</h1>
-              <p style={{ margin: 0, fontSize: '0.8rem', opacity: 0.7, letterSpacing: '4px' }}>{translations[language].subtitle}</p>
+              <h1 className="gradient-text app-title">SONICATLAS</h1>
+              <p className="app-subtitle">{translations[language].subtitle}</p>
             </motion.div>
           </motion.div>
         )}
@@ -144,7 +146,7 @@ function App() {
         {/* Overlays */}
         <SettingsModal />
         <ToastNotification />
-
+        <Analytics />
       </div>
     </div>
   );

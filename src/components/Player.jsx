@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRadioStore } from '../stores/useRadioStore';
 import { useAudioPlayer } from '../hooks/useAudioPlayer';
+import { useDesktopNotification } from '../hooks/useDesktopNotification';
 import { translations } from '../utils/translations';
 import { getCountryName } from '../utils/countryTranslator';
 import './Player.css';
+
 
 const Player = () => {
     const {
@@ -27,9 +29,43 @@ const Player = () => {
 
     const { isBuffering, error } = useAudioPlayer();
 
+    // Desktop notifications
+    const { requestPermission, permission } = useDesktopNotification(currentStation, isPlaying);
+
     // Volume Tooltip State
     const [isVolumeHovered, setIsVolumeHovered] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
+
+    // Listening Time Tracker
+    const [listeningTime, setListeningTime] = useState(0);
+
+    // Track listening duration
+    useEffect(() => {
+        if (!isPlaying || !currentStation) {
+            setListeningTime(0);
+            return;
+        }
+
+        const startTime = Date.now();
+        const interval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            setListeningTime(elapsed);
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [isPlaying, currentStation]);
+
+    // Format time as MM:SS or HH:MM:SS
+    const formatTime = (seconds) => {
+        const hrs = Math.floor(seconds / 3600);
+        const mins = Math.floor((seconds % 3600) / 60);
+        const secs = seconds % 60;
+
+        if (hrs > 0) {
+            return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    };
 
     // Auto-skip on error with Debounce
     useEffect(() => {
@@ -42,10 +78,17 @@ const Player = () => {
     }, [error, currentStation, handleStationError]);
 
     const [timeLeft, setTimeLeft] = useState('');
+    const fadeOutRef = useRef(null);
+    const originalVolumeRef = useRef(volume);
 
     useEffect(() => {
         if (!sleepTime) {
             setTimeLeft('');
+            // Clear any ongoing fade out
+            if (fadeOutRef.current) {
+                clearInterval(fadeOutRef.current);
+                fadeOutRef.current = null;
+            }
             return;
         }
 
@@ -54,9 +97,29 @@ const Player = () => {
             const diff = sleepTime - now;
 
             if (diff <= 0) {
+                // Time's up - stop
                 stopStation();
                 cancelSleepTimer();
                 setTimeLeft('');
+                // Restore original volume
+                setVolume(originalVolumeRef.current);
+            } else if (diff <= 10000 && !fadeOutRef.current) {
+                // Start fade out in last 10 seconds
+                originalVolumeRef.current = volume; // Save current volume
+                const fadeSteps = 20; // 20 steps over 10 seconds
+                const fadeInterval = 500; // Every 500ms
+                const volumeStep = volume / fadeSteps;
+                let currentFadeVolume = volume;
+
+                fadeOutRef.current = setInterval(() => {
+                    currentFadeVolume = Math.max(0, currentFadeVolume - volumeStep);
+                    setVolume(currentFadeVolume);
+
+                    if (currentFadeVolume <= 0) {
+                        clearInterval(fadeOutRef.current);
+                        fadeOutRef.current = null;
+                    }
+                }, fadeInterval);
             } else {
                 setTimeLeft(Math.ceil(diff / 60000));
             }
@@ -64,8 +127,14 @@ const Player = () => {
 
         setTimeLeft(Math.ceil((sleepTime - Date.now()) / 60000));
 
-        return () => clearInterval(interval);
-    }, [sleepTime, stopStation, cancelSleepTimer]);
+        return () => {
+            clearInterval(interval);
+            if (fadeOutRef.current) {
+                clearInterval(fadeOutRef.current);
+                fadeOutRef.current = null;
+            }
+        };
+    }, [sleepTime, stopStation, cancelSleepTimer, volume, setVolume]);
 
     const handleSleepTimer = () => {
         if (!sleepTime) {
@@ -127,36 +196,67 @@ const Player = () => {
                 <div className="player-content">
                     {/* Station Info */}
                     <div className="track-info">
-                        <div className="track-title" title={currentStation.name}>{currentStation.name}</div>
+                        <div className="station-header">
+                            <div className="track-title" title={currentStation.name}>{currentStation.name}</div>
+                            {isPlaying && (
+                                <div className="listening-time">
+                                    <span>{formatTime(listeningTime)} / </span>
+                                    <span className="live-dot"></span>
+                                    <span className="live-text">CANLI</span>
+                                </div>
+                            )}
+                        </div>
                         <div className="track-artist">{getCountryName(currentStation.countrycode, language) || currentStation.country || 'Unknown'}</div>
                     </div>
 
                     {/* Controls */}
-                    <div className="controls-row">
-
-
-                        <button onClick={playPreviousStation} className="control-button">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" /></svg>
-                        </button>
-
-                        <button
-                            className="control-button large"
-                            onClick={handlePlayPause}
-                            disabled={isBuffering}
-                            aria-label={isPlaying ? 'Pause' : 'Play'}
+                    <div className="controls">
+                        <motion.button
+                            className="control-btn secondary"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => playPreviousStation()}
+                            title={translations[language].prevStation}
                         >
-                            {isBuffering ? (
-                                <div className="spinner small" style={{ width: '20px', height: '20px', border: '2px solid rgba(0,0,0,0.3)', borderTopColor: 'black' }}></div>
-                            ) : isPlaying ? (
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="black"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
-                            ) : (
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z" /></svg>
-                            )}
-                        </button>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                                <line x1="5" y1="19" x2="5" y2="5"></line>
+                            </svg>
+                        </motion.button>
 
-                        <button onClick={playNextStation} className="control-button">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" /></svg>
-                        </button>
+                        {isBuffering ? (
+                            <div className="buffering-spinner"></div>
+                        ) : (
+                            <motion.button
+                                className="control-btn primary"
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={handlePlayPause}
+                            >
+                                {isPlaying ? (
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                                        <rect x="6" y="4" width="4" height="16"></rect>
+                                        <rect x="14" y="4" width="4" height="16"></rect>
+                                    </svg>
+                                ) : (
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                )}
+                            </motion.button>
+                        )}
+                        <motion.button
+                            className="control-btn secondary"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => playNextStation()}
+                            title={translations[language].nextStation}
+                        >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                                <line x1="19" y1="5" x2="19" y2="19"></line>
+                            </svg>
+                        </motion.button>
                     </div>
 
                     {/* Volume Control */}

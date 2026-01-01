@@ -1,8 +1,8 @@
 {
     "rewrites": [
         {
-            "source": "/api/:path*",
-            "destination": "/api/:path*"
+            "source": "/(.*)",
+            "destination": "/"
         }
     ],
     "headers": [
@@ -15,13 +15,16 @@
                 },
                 {
                     "key": "Access-Control-Allow-Methods",
-                    "value": "GET, OPTIONS"
+                    "value": "GET, POST, PUT, DELETE, OPTIONS"
                 },
                 {
                     "key": "Access-Control-Allow-Headers",
-                    "value": "Content-Type"
+                    "value": "X-Requested-With, Content-Type, Authorization"
                 }
             ]
         }
-    ]
+    ],
+    "analytics": {
+        "enable": true
+    }
 }

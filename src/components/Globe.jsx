@@ -6,6 +6,7 @@ import radioBrowserService from '../services/RadioBrowserService';
 import { COUNTRY_COORDS, getCountryAltitude } from '../utils/countryCoordinates';
 import { getCountryName } from '../utils/countryTranslator';
 import { translations } from '../utils/translations';
+import { createAudioVisualizer, updateVisualizer } from '../utils/audioVisualizer';
 import './Globe.css';
 
 // Get user's timezone offset to determine if it's day or night
@@ -36,6 +37,8 @@ export const GlobeComponent = ({ onGlobeReady }) => {
     const [hoveredPolygon, setHoveredPolygon] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [hasInitialized, setHasInitialized] = useState(false);
+    const visualizerRef = useRef(null);
+    const animationFrameRef = useRef(null);
 
     const {
         setSelectedCountry,
@@ -209,7 +212,7 @@ export const GlobeComponent = ({ onGlobeReady }) => {
         }
     }, [selectedCountryCode]);
 
-    // Add Sun Light and improve ambient lighting
+    // Add Sun Light and improve ambient lighting + Audio Visualizer
     useEffect(() => {
         if (globeRef.current) {
             const scene = globeRef.current.scene();
@@ -223,8 +226,45 @@ export const GlobeComponent = ({ onGlobeReady }) => {
             if (ambientLight) {
                 ambientLight.intensity = 0.6; // Brighter ambient for standard look
             }
+
+            // Add audio visualizer
+            if (!visualizerRef.current) {
+                visualizerRef.current = createAudioVisualizer(105); // Globe radius = 100, visualizer = 105
+                scene.add(visualizerRef.current);
+            }
         }
+
+        // Cleanup
+        return () => {
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
+        };
     }, [hasInitialized]);
+
+    // Animate visualizer with audio data
+    useEffect(() => {
+        if (!isPlaying || !visualizerRef.current) return;
+
+        // Get Web Audio analyser from useAudioPlayer hook
+        const updateAnimation = () => {
+            if (window.audioAnalyser) {
+                const dataArray = new Uint8Array(window.audioAnalyser.frequencyBinCount);
+                window.audioAnalyser.getByteFrequencyData(dataArray);
+                updateVisualizer(visualizerRef.current, dataArray);
+            }
+
+            animationFrameRef.current = requestAnimationFrame(updateAnimation);
+        };
+
+        updateAnimation();
+
+        return () => {
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
+        };
+    }, [isPlaying]);
 
     return (
         <div className="globe-container">

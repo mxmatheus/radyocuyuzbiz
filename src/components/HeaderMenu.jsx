@@ -30,6 +30,36 @@ export default function HeaderMenu() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [menuRef]);
 
+    // EQ Presets
+    const eqPresets = {
+        flat: { bass: 0, mid: 0, treble: 0 },
+        rock: { bass: 6, mid: -2, treble: 4 },
+        pop: { bass: 3, mid: 2, treble: 3 },
+        jazz: { bass: 2, mid: 4, treble: 2 },
+        classical: { bass: -2, mid: 3, treble: 4 },
+        speech: { bass: -4, mid: 6, treble: 2 }
+    };
+
+    const applyPreset = (presetName) => {
+        if (presetName === 'custom') return;
+        const preset = eqPresets[presetName];
+        if (preset) {
+            setEqSettings(preset);
+        }
+    };
+
+    const getActivePreset = () => {
+        const current = eqSettings || { bass: 0, mid: 0, treble: 0 };
+        for (const [name, preset] of Object.entries(eqPresets)) {
+            if (preset.bass === current.bass &&
+                preset.mid === current.mid &&
+                preset.treble === current.treble) {
+                return name;
+            }
+        }
+        return 'custom';
+    };
+
     return (
         <div ref={menuRef} style={{ position: 'absolute', top: '20px', right: '20px', zIndex: 200 }}>
             {/* Main Arguments Button */}
@@ -73,9 +103,10 @@ export default function HeaderMenu() {
                             top: '55px',
                             right: '0',
                             width: '280px',
-                            background: 'rgba(15, 23, 42, 0.9)',
-                            backdropFilter: 'blur(16px)',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            background: 'var(--glass-background)',
+                            backdropFilter: 'blur(20px) saturate(180%)',
+                            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                            border: '1px solid var(--glass-border)',
                             borderRadius: '16px',
                             padding: '12px',
                             boxShadow: '0 10px 40px -10px rgba(0,0,0,0.5)',
@@ -93,60 +124,6 @@ export default function HeaderMenu() {
                             label={translations[language].trending}
                         />
                         <MenuItem onClick={() => { openHistory(); setIsOpen(false); }} icon="clock" label={translations[language].history} />
-
-                        <div style={{ height: '1px', background: 'rgba(255,255,255,0.1)', margin: '4px 0' }}></div>
-
-                        {/* Audio Controls Section */}
-                        <div style={{ padding: '8px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px' }}>
-                            <div
-                                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', cursor: 'pointer' }}
-                                onClick={() => setShowEq(!showEq)}
-                            >
-                                <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.6)', letterSpacing: '1px' }}>{translations[language].soundEq}</span>
-                                <svg
-                                    width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                                    style={{ transform: showEq ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s', opacity: 0.5 }}
-                                >
-                                    <polyline points="6 9 12 15 18 9"></polyline>
-                                </svg>
-                            </div>
-
-                            <AnimatePresence>
-                                {showEq && (
-                                    <motion.div
-                                        initial={{ height: 0, opacity: 0 }}
-                                        animate={{ height: 'auto', opacity: 1 }}
-                                        exit={{ height: 0, opacity: 0 }}
-                                        style={{ overflow: 'hidden' }}
-                                    >
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingBottom: '4px' }}>
-                                            <EqSlider label="Bass" value={eqSettings?.bass || 0} onChange={(v) => setEqSettings({ bass: v })} />
-                                            <EqSlider label="Mid" value={eqSettings?.mid || 0} onChange={(v) => setEqSettings({ mid: v })} />
-                                            <EqSlider label="Treble" value={eqSettings?.treble || 0} onChange={(v) => setEqSettings({ treble: v })} />
-                                        </div>
-                                        <div style={{ textAlign: 'center', marginTop: '8px' }}>
-                                            <button
-                                                onClick={() => setEqSettings({ bass: 0, mid: 0, treble: 0 })}
-                                                style={{
-                                                    fontSize: '0.7rem',
-                                                    color: 'rgba(255,255,255,0.5)',
-                                                    background: 'rgba(255,255,255,0.05)',
-                                                    border: 'none',
-                                                    padding: '4px 12px',
-                                                    borderRadius: '12px',
-                                                    cursor: 'pointer',
-                                                    transition: 'all 0.2s'
-                                                }}
-                                                onMouseEnter={(e) => e.target.style.background = 'rgba(239, 68, 68, 0.2)'}
-                                                onMouseLeave={(e) => e.target.style.background = 'rgba(255,255,255,0.05)'}
-                                            >
-                                                {translations[language].reset}
-                                            </button>
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </div>
 
                         <div style={{ height: '1px', background: 'rgba(255,255,255,0.1)', margin: '4px 0' }}></div>
 

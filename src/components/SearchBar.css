@@ -64,17 +64,22 @@
 /* Responsive */
 @media (max-width: 768px) {
     .search-bar {
-        right: var(--spacing-md);
-        left: var(--spacing-md);
-        width: auto;
-        top: 80px;
+        margin-bottom: 0.75rem;
+        padding: 0.6rem;
+    }
+
+    .search-input {
+        font-size: 0.95rem;
+    }
+
+    .search-input::placeholder {
+        color: rgba(255, 255, 255, 0.85);
     }
 }
 
 @media (max-width: 480px) {
     .search-bar {
-        top: 70px;
-        right: var(--spacing-sm);
-        left: var(--spacing-sm);
+        margin-bottom: 0.5rem;
+        padding: 0.5rem;
     }
 }

@@ -152,14 +152,25 @@ export const useAudioPlayer = () => {
     }, []);
 
     // Initialize Web Audio API for Visualizer
+    // Setup Audio Context and Analyser
     useEffect(() => {
-        // Create or recreate context if needed
-        if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
+        if (typeof window === 'undefined') return; // SSR safety
+
+        if (!audioContextRef.current) {
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 audioContextRef.current = new AudioContext();
+
+                // Create Analyser For Visualizer
                 analyserRef.current = audioContextRef.current.createAnalyser();
                 analyserRef.current.fftSize = 256;
+                analyserRef.current.smoothingTimeConstant = 0.8;
+
+                // Expose analyser globally for visualizer
+                window.audioAnalyser = analyserRef.current;
+
+                // Connect analyser to destination (speakers)
+                analyserRef.current.connect(audioContextRef.current.destination);
             } catch (err) {
                 console.error('Failed to initialize Web Audio API:', err);
                 return;
@@ -191,9 +202,6 @@ export const useAudioPlayer = () => {
 
         const audio = audioRef.current;
         if (!audio) return;
-
-        // CRITICAL: Stop current playback immediately
-        audio.pause();
 
         // Ensure we are using a "Visualizer Compatible" Audio element for the new station FIRST
         if (audio.crossOrigin !== 'anonymous') {
@@ -234,30 +242,76 @@ export const useAudioPlayer = () => {
             setError(null);
             setIsBuffering(true);
 
-            activeAudio.src = streamUrl;
-            activeAudio.load();
+            // Cross-fade settings
+            const crossFadeDuration = 1000; // 1 second total
+            const fadeSteps = 20;
+            const fadeInterval = crossFadeDuration / fadeSteps;
 
-            const playPromise = activeAudio.play();
+            // Check if there's currently playing audio to fade out
+            const hasCurrentAudio = activeAudio.src && !activeAudio.paused;
 
-            if (playPromise !== undefined) {
-                playPromise
-                    .then(() => {
-                        // Resume audio context if suspended
-                        if (audioContextRef.current?.state === 'suspended') {
-                            audioContextRef.current.resume();
-                        }
-                    })
-                    .catch(e => {
-                        // Ignore AbortError (rapid switching)
-                        if (e.name !== 'AbortError') {
-                            console.warn("Play promise rejected", e);
-                        }
-                    });
+            if (hasCurrentAudio) {
+                // Fade out current station
+                const startVolume = activeAudio.volume;
+                let fadeOutStep = 0;
+
+                const fadeOutInterval = setInterval(() => {
+                    fadeOutStep++;
+                    const newVolume = startVolume * (1 - fadeOutStep / fadeSteps);
+                    activeAudio.volume = Math.max(0, newVolume);
+
+                    if (fadeOutStep >= fadeSteps) {
+                        clearInterval(fadeOutInterval);
+                        // Fade out complete, now switch
+                        loadNewStation();
+                    }
+                }, fadeInterval);
+            } else {
+                // No current audio, switch immediately
+                loadNewStation();
+            }
+
+            function loadNewStation() {
+                activeAudio.src = streamUrl;
+                activeAudio.load();
+                activeAudio.volume = 0; // Start silent
+
+                const playPromise = activeAudio.play();
+
+                if (playPromise !== undefined) {
+                    playPromise
+                        .then(() => {
+                            // Resume audio context if suspended
+                            if (audioContextRef.current?.state === 'suspended') {
+                                audioContextRef.current.resume();
+                            }
+
+                            // Fade in new station
+                            const targetVol = volume;
+                            let fadeInStep = 0;
+
+                            const fadeInInterval = setInterval(() => {
+                                fadeInStep++;
+                                const newVolume = (fadeInStep / fadeSteps) * targetVol;
+                                activeAudio.volume = Math.min(targetVol, newVolume);
+
+                                if (fadeInStep >= fadeSteps) {
+                                    clearInterval(fadeInInterval);
+                                    activeAudio.volume = targetVol;
+                                }
+                            }, fadeInterval);
+                        })
+                        .catch(e => {
+                            if (e.name !== 'AbortError') {
+                                console.warn("Play promise rejected", e);
+                            }
+                        });
+                }
             }
         } else {
             setIsBuffering(false);
         }
-    }, [currentStation, isPlaying]);
+    }, [currentStation, isPlaying, volume]);
 
     // Volume Effect
     useEffect(() => {
