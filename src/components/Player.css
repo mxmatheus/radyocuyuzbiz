@@ -255,6 +255,35 @@
     color: var(--color-neon-cyan);
 }
 
+.sleep-timer-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent !important;
+    border: none !important;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    color: var(--color-neon-cyan);
+    margin-left: 12px;
+    filter: drop-shadow(0 0 2px var(--glow-cyan));
+    animation: pulse-slow 3s infinite ease-in-out;
+}
+
+@keyframes pulse-slow {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
 /* Right Side Volume */
 .volume-container {
     display: flex;
@@ -302,23 +331,73 @@
         /* Keep fixed bottom */
     }
 
-    .controls-row {
+    .controls {
         position: static;
         transform: none;
         gap: 10px;
+        margin-left: auto;
+        /* Push to right */
     }
 
     .track-info {
-        max-width: 120px;
+        max-width: 140px;
+        /* Increased slightly */
+    }
+
+    .station-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+
+    .listening-time {
+        font-size: 0.6rem;
+        opacity: 0.9;
+    }
+
+    /* Marquee Effect for Mobile */
+    .track-title {
+        white-space: nowrap;
+        overflow: hidden;
+        display: block;
+        mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 1) 90%, transparent 100%);
+        -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 1) 90%, transparent 100%);
+    }
+
+    .track-title span {
+        display: inline-block;
+        padding-left: 0;
+        animation: marquee 10s linear infinite;
     }
 
     .volume-container {
-        display: none;
-        /* Hide volume on small screens */
+        display: none !important;
+    }
+}
+
+@keyframes marquee {
+    0% {
+        transform: translate(0, 0);
     }
 
-    .control-button.large {
-        width: 40px;
-        height: 40px;
+    10% {
+        transform: translate(0, 0);
     }
+
+    /* Pause at start */
+    50% {
+        transform: translate(-50%, 0);
+    }
+
+    /* Move left */
+    60% {
+        transform: translate(-50%, 0);
+    }
+
+    /* Pause */
+    100% {
+        transform: translate(0, 0);
+    }
+
+    /* Move back */
 }

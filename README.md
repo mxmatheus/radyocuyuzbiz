@@ -1,132 +1,97 @@
-# 🌍 SonicAtlas - Global Radio Streaming Platform
+# 🌍 SonicAtlas - Listen to the World
 
-**Explore and listen to thousands of radio stations from around the world through an interactive 3D globe.**
+**SonicAtlas** (formerly Radyocuyuzbiz) is an interactive 3D web application that allows you to explore and listen to thousands of live radio stations across the globe. Built with modern web technologies, it delivers an immersive audio-visual experience.
 
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://your-demo-url.com)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![React](https://img.shields.io/badge/React-18-61dafb.svg)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-5-646cff.svg)](https://vitejs.dev/)
+![SonicAtlas Preview](/preview.png)
 
-## ✨ Features
+## 🌟 Features
 
-### 🎵 Radio Experience
-- **Global Radio Access** - Stream thousands of radio stations from 200+ countries
-- **Interactive 3D Globe** - Click countries on a beautiful 3D Earth to discover local stations
-- **Smart Search** - Real-time search and filtering by station name, country, or genre
-- **Favorites & History** - Save your favorite stations and track listening history
-- **Trending Stations** - Discover popular stations globally or by country
-
-### 🎨 User Interface
-- **Smooth Animations** - Professional entrance animations and transitions
-- **Glassmorphism Design** - Modern, cyberpunk-inspired UI with neon accents
-- **Dark Mode** - Eye-friendly dark theme optimized for extended listening
-- **Responsive Design** - Perfect experience on desktop, tablet, and mobile
-- **PWA Support** - Install as a native app on any device
-
-### 🔧 Advanced Features
-- **Audio Visualizer** - Real-time frequency visualization during playback
-- **CORS Fallback** - Intelligent handling of CORS-restricted streams
-- **Globe Inertia** - Smooth, physics-based globe rotation
-- **Keyboard Controls** - Full keyboard shortcuts support
-- **Multi-language** - Turkish and English interface support
-
-### 🎚️ Coming Soon
-- **Equalizer** - Full 5-band EQ with Web Audio API
-- **Sleep Timer** - Auto-stop playback after set duration
-- **Playlists** - Create and manage custom station playlists
+*   **Interactive 3D Globe:** Explore 200+ countries with accurate coordinates and high-definition textures (Blue Marble).
+*   **Live Radio Streaming:** Access over 30,000 live radio stations via the Radio Browser API.
+*   **Immersive Visualizer:** Real-time 3D audio visualizer (`audioVisualizer.js`) with neon particles that react to bass, mids, and highs.
+*   **Smart Search:** Filter stations by name, tag, or country instantly.
+*   **Modern UI:** Glassmorphism design, smooth animations (Framer Motion), and responsive layout for mobile & desktop.
+*   **Audio Enhancements:** Cross-fade transitions between stations and volume control.
+*   **Localization:** Full Turkish and English language support.
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- **React 18** - Modern UI framework
-- **Vite 5** - Lightning-fast build tool
-- **Framer Motion** - Smooth animations and transitions
-- **Zustand** - Lightweight state management
-- **React Globe.gl** - Interactive 3D globe visualization
-- **Three.js** - WebGL-powered 3D graphics
-
-### APIs & Services
-- **Radio Browser API** - Access to 40,000+ radio stations worldwide
-- **Web Audio API** - Audio visualization and processing
-- **Service Worker** - PWA offline support
-
-### Styling
-- **CSS3** - Custom glassmorphism and neon effects
-- **CSS Variables** - Theme system with cyan/purple/green variants
+*   **Frontend:** React 18, Vite
+*   **3D/Graphics:** Three.js, React Globe.gl
+*   **Audio:** Web Audio API (AnalyserNode), Tone.js (effects)
+*   **State Management:** Zustand
+*   **Styling:** CSS variables, Glassmorphism, Responsive Design
+*   **Deployment:** Vercel (CI/CD, Analytics)
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
-- npm or yarn
+*   Node.js (v18+)
+*   npm
 
 ### Installation
 
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/sonicatlas.git
-cd sonicatlas
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/yourusername/sonic-atlas.git
+    cd sonic-atlas
+    ```
 
-# Install dependencies
-npm install
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
 
-# Start development server
-npm run dev
+3.  Run the development server:
+    ```bash
+    npm run dev
+    ```
 
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-```
-
-### Environment Setup
-
-No environment variables required! The app uses public APIs and works out of the box.
-
-## 📱 PWA Installation
-
-SonicAtlas can be installed as a Progressive Web App:
-
-1. Visit the website
-2. Click the install icon in your browser's address bar
-3. Or use "Add to Home Screen" on mobile devices
-
-## 🎮 Keyboard Shortcuts
-
-| Key | Action |
-|-----|--------|
-| `Space` | Play/Pause |
-| `Esc` | Close panels/menus |
-| `↑/↓` | Volume control |
-| `M` | Toggle menu |
-| `F` | Add to favorites |
-
-## 🌐 Browser Support
-
-- Chrome/Edge 90+
-- Firefox 88+
-- Safari 14+
-- Opera 76+
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [Radio Browser API](https://www.radio-browser.info/) - Free radio station database
-- [React Globe.gl](https://github.com/vasturiano/react-globe.gl) - 3D globe component
-- [Framer Motion](https://www.framer.com/motion/) - Animation library
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to open issues or submit pull requests.
-
-## 📧 Contact
-
-For questions or feedback, please open an issue on GitHub.
+4.  Build for production:
+    ```bash
+    npm run build
+    ```
 
 ---
 
-**Made with ❤️ and 🎵 for music lovers worldwide**
+# 🌍 SonicAtlas - Dünyayı Dinle
+
+**SonicAtlas** (eski adıyla Radyocuyuzbiz), dünya üzerindeki binlerce canlı radyo istasyonunu interaktif bir 3D dünya haritası üzerinden keşfetmenizi sağlayan modern bir web uygulamasıdır.
+
+## 🌟 Özellikler
+
+*   **İnteraktif 3D Küre:** 200'den fazla ülkeyi gerçek koordinatlarıyla keşfedin.
+*   **Canlı Radyo Akışı:** Radio Browser API üzerinden 30.000+ radyo istasyonuna erişim.
+*   **Görsel Şölen:** Müziğin ritmine ve frekansına göre tepki veren neon parçacıklı 3D ses görselleştirici.
+*   **Akıllı Arama:** Radyo adı, türü veya ülkeye göre anlık filtreleme.
+*   **Modern Arayüz:** Glassmorphism tasarım dili, akıcı geçişler ve mobil uyumlu yapı.
+*   **Ses Geliştirmeleri:** Radyolar arası yumuşak geçiş (Cross-fade) özelliği.
+*   **Dil Desteği:** Türkçe ve İngilizce seçenekleri.
+
+## 🛠️ Teknolojiler
+
+*   **Arayüz:** React 18, Vite
+*   **3D Motoru:** Three.js, React Globe.gl
+*   **Ses:** Web Audio API, Tone.js
+*   **Durum Yönetimi:** Zustand
+*   **Deployment:** Vercel
+
+## 🚀 Kurulum
+
+1.  Projeyi indirin:
+    ```bash
+    git clone https://github.com/kullaniciadi/sonic-atlas.git
+    cd sonic-atlas
+    ```
+
+2.  Paketleri yükleyin:
+    ```bash
+    npm install
+    ```
+
+3.  Projeyi başlatın:
+    ```bash
+    npm run dev
+    ```
+
+**License:** MIT
