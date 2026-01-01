@@ -23,8 +23,5 @@
                 }
             ]
         }
-    ],
-    "analytics": {
-        "enable": true
-    }
+    ]
 }
