@@ -15,6 +15,23 @@ export const useAudioPlayer = () => {
     const [error, setError] = useState(null);
     const [audioData, setAudioData] = useState(new Uint8Array(128));
 
+    // Helper: Wrap HTTP URLs with proxy in production
+    const getProxiedUrl = (url) => {
+        // OnlyProxy HTTP URLs in production (HTTPS environment)
+        const isProduction = window.location.protocol === 'https:';
+        const isHttpUrl = url.startsWith('http://');
+
+        if (isProduction && isHttpUrl) {
+            // Use backend proxy to avoid Mixed Content
+            const proxyUrl = `/api/radio-proxy?url=${encodeURIComponent(url)}`;
+            console.log(`🔄 Proxying HTTP stream: ${url}`);
+            return proxyUrl;
+        }
+
+        // HTTPS URLs or localhost - use directly
+        return url;
+    };
+
     // Cleanup helper
     const cleanupAudioListeners = (audio) => {
         if (!audio) return;
@@ -211,13 +228,8 @@ export const useAudioPlayer = () => {
         if (currentStation && isPlaying) {
             let streamUrl = currentStation.url_resolved || currentStation.url;
 
-            // PRODUCTION FIX: Upgrade HTTP to HTTPS for Mixed Content
-            // If site is HTTPS, try to use HTTPS for radio streams
-            if (window.location.protocol === 'https:' && streamUrl.startsWith('http:')) {
-                const httpsUrl = streamUrl.replace('http:', 'https:');
-                console.log(`🔒 Upgrading HTTP to HTTPS: ${streamUrl} → ${httpsUrl}`);
-                streamUrl = httpsUrl;
-            }
+            // Use proxy for HTTP URLs in production
+            streamUrl = getProxiedUrl(streamUrl);
 
             setError(null);
             setIsBuffering(true);
